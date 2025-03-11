@@ -98,16 +98,24 @@ extension ArticleViewController: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         selectIndex = indexPath.row
         print(selectIndex)
-        performSegue(withIdentifier: "detail", sender: self)
+        //performSegue(withIdentifier: "detail", sender: self) -> 1st way using segues, calles prepare(for segue)
+        //2nd way
+        showArticleDetails(for: self.articleIndex(selectIndex))
     }
     
-  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let detailViewController = segue.destination as? DetailViewController {
-            let articleVM = self.articleIndex(selectIndex)
-            detailViewController.articles = articleVM
-            print(articleVM)
-        }
+    private func showArticleDetails(for article: Article) {
+        guard let detailsVC = self.storyboard?.instantiateViewController(withIdentifier: "detailsVC") as? DetailViewController else { return }
+        detailsVC.articles = article
+        self.navigationController?.pushViewController(detailsVC, animated: true)
     }
+    
+//  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if let detailViewController = segue.destination as? DetailViewController {
+//            let articleVM = self.articleIndex(selectIndex)
+//            detailViewController.articles = articleVM
+//            print(articleVM)
+//        }
+//    }
 }
 
 
